@@ -1,15 +1,23 @@
-#ifndef CLOG_H
-#define CLOG_H
 #include <clog/clog.h>
-#if defined(__linux__) || defined(__unix__) || defined(__APPLE__) //TODO siblings
-#include<pthread.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <string.h>
+#include <stdarg.h>
+#if defined(__APPLE__) && defined(__MACH__) || defined (__linux__) //TODO add Unix and Solaris
+#include <unistd.h>
+#include <pthread.h>
+#define SEPARATOR ('/')
+#elif _WIN32
+#include <Windows.h>
+#define SEPARATOR ('\\')
 #else
-//Windows headers
+#error Platform not supprted
 #endif
 
 int n = 2;
 static int *writefd = &n; //for different socket support
-static int is_debug = 0;
 
 #if defined(__linux__) || defined(__unix__) || defined(__APPLE__) //TODO siblings
 pthread_mutex_t _lock;
@@ -19,7 +27,7 @@ pthread_mutex_t plock;
 #endif
 const void init_clog()
 {
-#ifdef CLOG_ENABLE
+#ifdef ENABLE_CLOG
 #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
 	pthread_mutex_init(&_lock, NULL);
 	pthread_mutex_init(&plock, NULL);
@@ -35,27 +43,18 @@ const void init_clog()
  */
 void change_out_socket(int *sockfd)
 {
-#ifdef CLOG_ENABLE
+#ifdef ENABLE_CLOG
 	writefd = sockfd;
-#endif
-}
-
-void debug_mode(int val)
-{
-#ifdef CLOG_ENABLE
-	is_debug = val;
 #endif
 }
 
 void log_inf(const char *tag, const char *msg, ...)
 {
-#ifdef CLOG_ENABLE
-	if(is_debug)
-	{
+#ifdef ENABLE_CLOG
 #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
 		pthread_mutex_lock(&_lock);
 #endif
-		char *str = (char *)malloc(BUFFER_SIZE);
+		char *str = (char *)malloc(strlen(msg));
 		va_list vl;
 		va_start(vl, msg);
 		vsprintf(str, msg, vl);
@@ -64,19 +63,16 @@ void log_inf(const char *tag, const char *msg, ...)
 #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
 		pthread_mutex_unlock(&_lock);
 #endif
-	}
 #endif
 }
 
 void log_err(const char *tag, const char *msg, ...) 
 {
-#ifdef CLOG_ENABLE
-	if(is_debug)
-	{
+#ifdef ENABLE_CLOG
 #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
 		pthread_mutex_lock(&_lock);
 #endif
-		char *str = (char *)malloc(BUFFER_SIZE);
+		char *str = (char *)malloc(strlen(msg));
 		va_list vl;
 		va_start(vl, msg);
 		vsprintf(str, msg, vl);
@@ -85,19 +81,16 @@ void log_err(const char *tag, const char *msg, ...)
 #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
 		pthread_mutex_unlock(&_lock);
 #endif
-	}
 #endif
 }
 
 void log_per(const char *tag, const char *msg, ...)
 {
-#ifdef CLOG_ENABLE
-	if(is_debug)
-	{
+#ifdef ENABLE_CLOG
 #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
 		pthread_mutex_lock(&_lock);
 #endif
-		char *str = (char *)malloc(BUFFER_SIZE);
+		char *str = (char *)malloc(strlen(msg));
 		va_list vl;
 		va_start(vl, msg);
 		vsprintf(str, msg, vl);
@@ -106,19 +99,16 @@ void log_per(const char *tag, const char *msg, ...)
 #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
 		pthread_mutex_unlock(&_lock);
 #endif
-	}
 #endif
 }
 
 void log_fat(const char *tag, const char *msg, ...)
 {
-#ifdef CLOG_ENABLE
-	if(is_debug)
-	{
+#ifdef ENABLE_CLOG
 #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
 		pthread_mutex_lock(&_lock);
 #endif
-		char *str = (char *)malloc(BUFFER_SIZE);
+		char *str = (char *)malloc(strlen(msg));
 		va_list vl;
 		va_start(vl, msg);
 		vsprintf(str, msg, vl);
@@ -127,7 +117,5 @@ void log_fat(const char *tag, const char *msg, ...)
 #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
 		pthread_mutex_unlock(&_lock);
 #endif
-	}
 #endif
 }
-#endif

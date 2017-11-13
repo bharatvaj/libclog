@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(clog VERSION 0.5 DESCRIPTION "Asynchronous fast logging library for C")
+project(clog VERSION 0.5 DESCRIPTION "Asynchronous fast logging library for C" LANGUAGES C)
 file(GLOB_RECURSE clog_HDRS "include/*.h")
 file(GLOB_RECURSE clog_SRCS "src/*.c")
 
