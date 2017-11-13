@@ -3,7 +3,7 @@ project(clog VERSION 0.5 DESCRIPTION "Asynchronous fast logging library for C")
 file(GLOB_RECURSE clog_HDRS "include/*.h")
 file(GLOB_RECURSE clog_SRCS "src/*.c")
 
-option(ENABLE_LOG_COLOR "Enables colors in debugging" ON)
+option(ENABLE_CLOG_COLOR "Enables colors in debugging" ON)
 
 if(CMAKE_BUILD_TYPE STREQUAL "")
 	set(CMAKE_BUILD_TYPE "Debug")
@@ -11,15 +11,15 @@ endif()
 
 #build options
 if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
-option(ENABLE_LOG
+option(ENABLE_CLOG
 	"Enable debugging" OFF)
 else()
-	option(ENABLE_LOG "Enable debugging" ON)
+	option(ENABLE_CLOG "Enable debugging" ON)
 endif()
-if(ENABLE_LOG)
-	add_definitions(-DENABLE_LOG)
-	if(ENABLE_LOG_COLOR)
-		add_definitions(-DENABLE_LOG_COLOR)
+if(ENABLE_CLOG)
+	add_definitions(-DENABLE_CLOG)
+	if(ENABLE_CLOG_COLOR)
+		add_definitions(-DENABLE_CLOG_COLOR)
 	endif()
 endif()
 

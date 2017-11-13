@@ -18,7 +18,7 @@
 #error Platform not supprted
 #endif
 
-#ifdef ENABLE_LOG_COLOR
+#ifdef ENABLE_CLOG_COLOR
 #define COLOR_RED     "\x1b[31m"
 #define COLOR_GREEN   "\x1b[32m"
 #define COLOR_YELLOW  "\x1b[33m"
