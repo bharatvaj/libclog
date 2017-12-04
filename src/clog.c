@@ -16,8 +16,8 @@
 #error Platform not supprted
 #endif
 
-int n = 2;
-static int *writefd = &n; //for different socket support
+int __n = 2;
+static int *__writefd = &__n; //for different socket support
 
 #if defined(__linux__) || defined(__unix__) || defined(__APPLE__) //TODO siblings
 pthread_mutex_t _lock;
@@ -44,7 +44,7 @@ const void init_clog()
 void change_out_socket(int *sockfd)
 {
 #ifdef ENABLE_CLOG
-	writefd = sockfd;
+	__writefd = sockfd;
 #endif
 }
 
