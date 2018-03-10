@@ -1,4 +1,7 @@
 #ifndef CLOG_H
+#ifdef __cplusplus
+extern "C" {
+#endif
 #define CLOG_H
 
 #ifdef ENABLE_CLOG_COLOR
@@ -24,4 +27,7 @@ void log_err(const char *, const char *, ...);
 void log_per(const char *, const char *, ...);
 void log_fat(const char *, const char *, ...);
 
+#ifdef __cplusplus
+}
+#endif
 #endif
