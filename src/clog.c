@@ -59,7 +59,7 @@ void log_inf(const char *tag, const char *msg, ...)
 		va_start(vl, msg);
 		vsprintf(str, msg, vl);
 		va_end(vl);
-		printf("%s[!]%s %s: %s\n", COLOR_YELLOW, COLOR_RESET, tag, str);
+		printf("%s[!]%s %s: %s\n", CLOG_COLOR_YELLOW, CLOG_COLOR_RESET, tag, str);
 #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
 		pthread_mutex_unlock(&_lock);
 #endif
