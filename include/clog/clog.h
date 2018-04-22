@@ -23,6 +23,7 @@ extern "C" {
 #endif
 
 void log_inf(const char *, const char *, ...);
+void log_war(const char *, const char *, ...);
 void log_err(const char *, const char *, ...);
 void log_per(const char *, const char *, ...);
 void log_fat(const char *, const char *, ...);
