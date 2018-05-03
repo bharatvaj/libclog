@@ -4,7 +4,7 @@ extern "C" {
 #endif
 #define CLOG_H
 
-#ifdef ENABLE_CLOG_CLOG_COLOR
+#ifdef ENABLE_CLOG_COLOR
 #define CLOG_COLOR_RED     "\x1b[31m"
 #define CLOG_COLOR_GREEN   "\x1b[32m"
 #define CLOG_COLOR_YELLOW  "\x1b[33m"
