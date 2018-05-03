@@ -16,31 +16,54 @@
 #error Platform not supprted
 #endif
 
-int __n = 2;
+#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
+#define _CLOG_LOCK() pthread_mutex_lock(&_lock);
+#elif defined(_WIN32)
+#define _CLOG_LOCK()
+#endif
+
+#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
+#define _CLOG_UNLOCK() pthread_mutex_unlock(&_lock);
+#elif defined(_WIN32)
+#define _CLOG_UNLOCK()
+#endif
+
+#if defined(ENABLE_CLOG_COLOR)
+#define _CLOG_PRINT(__CLOG_FORMAT, __CLOG__FORMAT_COLORED, __CLOG_COLOR) fprintf(stderr, __CLOG__FORMAT_COLORED, __CLOG_COLOR, CLOG_COLOR_RESET, tag, str);
+#else
+#define _CLOG_PRINT(__CLOG_FORMAT, __CLOG__FORMAT_COLORED, __CLOG_COLOR) fprintf(stderr, __CLOG_FORMAT, tag, str);
+#endif
+
+#if defined(ENABLE_CLOG)
+#define _CLOG(__CLOG_FORMAT, __CLOG__FORMAT_COLORED, __CLOG_COLOR)        \
+	{                                                                     \
+		_CLOG_LOCK();                                                     \
+		char *str = (char *)malloc(strlen(msg));                          \
+		va_list vl;                                                       \
+		va_start(vl, msg);                                                \
+		vsprintf(str, msg, vl);                                           \
+		va_end(vl);                                                       \
+		_CLOG_PRINT(__CLOG_FORMAT, __CLOG__FORMAT_COLORED, __CLOG_COLOR); \
+		_CLOG_UNLOCK();                                                   \
+	}
+#else
+#define _CLOG(__CLOG_FORMAT, __CLOG__FORMAT_COLORED, __CLOG_COLOR)
+#endif
+
+static int __n = 2;
 static int *__writefd = &__n; //for different socket support
 
 #if defined(__linux__) || defined(__unix__) || defined(__APPLE__) //TODO siblings
-pthread_mutex_t _lock;
-pthread_mutex_t plock;
+static pthread_mutex_t _lock = PTHREAD_MUTEX_INITIALIZER;
 #else
 //windows locks
 #endif
-const void init_clog()
-{
-#ifdef ENABLE_CLOG
-#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
-	pthread_mutex_init(&_lock, NULL);
-	pthread_mutex_init(&plock, NULL);
-#else
-//windows mutex init
-#endif
-#endif
-}
 
-/** Changes the default printing socket
- * @param sockfd The socket descriptor to write to
+/*!
+ * \brief - Changes the default printing socket
+ * \param sockfd - The socket descriptor to write to
  */
-void change_out_socket(int *sockfd)
+void change_socket(int *sockfd)
 {
 #ifdef ENABLE_CLOG
 	__writefd = sockfd;
@@ -49,56 +72,17 @@ void change_out_socket(int *sockfd)
 
 void log_inf(const char *tag, const char *msg, ...)
 {
-#ifdef ENABLE_CLOG
-#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
-	pthread_mutex_lock(&_lock);
-#endif
-	char *str = (char *)malloc(strlen(msg));
-	va_list vl;
-	va_start(vl, msg);
-	vsprintf(str, msg, vl);
-	va_end(vl);
-	printf("[I] %s: %s\n", tag, str);
-#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
-	pthread_mutex_unlock(&_lock);
-#endif
-#endif
+	_CLOG("[I] %s: %s\n", "%s[I]%s %s: %s\n", CLOG_COLOR_YELLOW);
 }
 
 void log_war(const char *tag, const char *msg, ...)
 {
-#ifdef ENABLE_CLOG
-#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
-	pthread_mutex_lock(&_lock);
-#endif
-	char *str = (char *)malloc(strlen(msg));
-	va_list vl;
-	va_start(vl, msg);
-	vsprintf(str, msg, vl);
-	va_end(vl);
-	printf("%s[!]%s %s: %s\n", CLOG_COLOR_YELLOW, CLOG_COLOR_RESET, tag, str);
-#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
-	pthread_mutex_unlock(&_lock);
-#endif
-#endif
+	_CLOG("[!] %s: %s\n", "%s[!]%s %s: %s\n", CLOG_COLOR_MAGENTA);
 }
 
 void log_err(const char *tag, const char *msg, ...)
 {
-#ifdef ENABLE_CLOG
-#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
-	pthread_mutex_lock(&_lock);
-#endif
-	char *str = (char *)malloc(strlen(msg));
-	va_list vl;
-	va_start(vl, msg);
-	vsprintf(str, msg, vl);
-	va_end(vl);
-	printf("[X] %s: %s\n", tag, str);
-#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
-	pthread_mutex_unlock(&_lock);
-#endif
-#endif
+	_CLOG("[X] %s: %s\n", "%s[X]%s %s: %s\n", CLOG_COLOR_RED);
 }
 
 void log_per(const char *tag, const char *msg, ...)
@@ -121,18 +105,5 @@ void log_per(const char *tag, const char *msg, ...)
 
 void log_fat(const char *tag, const char *msg, ...)
 {
-#ifdef ENABLE_CLOG
-#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
-	pthread_mutex_lock(&_lock);
-#endif
-	char *str = (char *)malloc(strlen(msg));
-	va_list vl;
-	va_start(vl, msg);
-	vsprintf(str, msg, vl);
-	va_end(vl);
-	printf("[FATAL] %s: %s\n", tag, str);
-#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
-	pthread_mutex_unlock(&_lock);
-#endif
-#endif
+	_CLOG("[FATAL] %s: %s\n", "%s[FATAL]%s %s: %s\n", CLOG_COLOR_RED);
 }
