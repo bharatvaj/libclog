@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(clog VERSION 0.6 DESCRIPTION "Asynchronous fast logging library for C")
+project(clog VERSION 0.7 DESCRIPTION "Asynchronous fast logging library for C")
 
 enable_testing()
 file(GLOB_RECURSE clog_HDRS "include/clog/clog.h")
