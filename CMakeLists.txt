@@ -51,10 +51,10 @@ install (TARGETS clogd
         LIBRARY DESTINATION lib
 		RUNTIME DESTINATION bin)
 
-add_executable(cloge test/test.c)
-add_executable(cloged test/test.c)
-target_link_libraries(cloge -lclog)
-target_link_libraries(cloged -lclogd)
+add_executable(clog_test_exec test/test.c)
+add_executable(clogd_test_exec test/test.c)
+target_link_libraries(clog_test_exec clog)
+target_link_libraries(clogd_test_exec clogd)
 
-add_test(clog_test ${CMAKE_BINARY_DIR}/cloge)
-add_test(clogd_test ${CMAKE_BINARY_DIR}/cloged)
+add_test(clog_test ${CMAKE_BINARY_DIR}/clog_test_exec)
+add_test(clogd_test ${CMAKE_BINARY_DIR}/clogd_test_exec)
