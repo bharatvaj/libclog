@@ -6,18 +6,12 @@ extern "C" {
 
 #include <stdio.h>
 
-enum clog_level {
-    CLOG_INFO,
-    CLOG_WARN,
-    CLOG_ERROR,
-    CLOG_FATAL
-};
+enum clog_level { CLOG_INFO, CLOG_WARN, CLOG_ERROR, CLOG_FATAL };
 
-typedef struct
-{
-	enum clog_level level;
-	const char *tag;
-	const char *msg;
+typedef struct {
+  enum clog_level level;
+  const char *tag;
+  const char *msg;
 } clog_item;
 
 /*!
@@ -32,7 +26,6 @@ void log_out(FILE *);
  * \param msg - The message to be printed
  */
 void log_inf(const char *tag, const char *, ...);
-
 
 /*!
  * \brief - Log message as warning
@@ -54,7 +47,6 @@ void log_err(const char *, const char *, ...);
  * \param msg - The message to be printed
  */
 void log_per(const char *, const char *, ...);
-
 
 /*!
  * \brief - Log message as fatal error
