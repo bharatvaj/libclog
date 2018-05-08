@@ -27,7 +27,7 @@ log_fat(TAG, "%s", "test"); // log fatal errors
 #### Debug and Production builds
 clog by default prints to stderr but can be changed to print to any given `FILE *`. This includes the stdout, normal files, sockets, etc.
 ```c
-#include <stdio.o>
+#include <stdio.h>
 ...
 FILE *fp = fopen("log.txt", "w");
 clog_out(fp);

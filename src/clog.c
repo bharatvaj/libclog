@@ -32,7 +32,6 @@
 #define _CLOG_UNLOCK()
 #endif
 
-#if defined(ENABLE_CLOG)
 #define _CLOG_LOG(__CLOG_LEVEL, __CLOG_FILE, __CLOG__LINE)                     \
   {                                                                            \
     char *str = (char *)malloc(strlen(msg));                                   \
@@ -46,9 +45,6 @@
     add_to_stack(ci);                                                          \
     va_end(vl);                                                                \
   }
-#else
-#define _CLOG_LOG(__CLOG_LEVEL, __CLOG_FILE, __CLOG__LINE)
-#endif
 
 static FILE *__output_file = NULL;
 
@@ -72,11 +68,7 @@ void add_to_stack(clog_item *ci) {
  * \brief - Changes the default printing socket
  * \param sockfd - The socket descriptor to write to
  */
-void clog_out(FILE *output_file) {
-#ifdef ENABLE_CLOG
-  __output_file = output_file;
-#endif
-}
+void clog_out(FILE *output_file) { __output_file = output_file; }
 
 void log_inf(const char *tag, const char *msg, ...) {
   _CLOG_LOG(CLOG_INFO, __FILE__, __LINE__);
@@ -91,7 +83,6 @@ void log_err(const char *tag, const char *msg, ...) {
 }
 
 void log_per(const char *tag, const char *msg, ...) {
-#ifdef ENABLE_CLOG
 #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
   pthread_mutex_lock(&__clog_lock);
 #endif
@@ -103,7 +94,6 @@ void log_per(const char *tag, const char *msg, ...) {
   perror(str);
 #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
   pthread_mutex_unlock(&__clog_lock);
-#endif
 #endif
 }
 
