@@ -6,17 +6,12 @@ file(GLOB_RECURSE clog_HDRS "include/clog/clog.h")
 file(GLOB_RECURSE clog_SRCS "src/clog.c")
 find_package(Threads REQUIRED)
 
-option(ENABLE_CLOG_COLOR "Enables colors in debugging" ON)
-
 function(build_lib varValue)
 #no-op lib
 add_library(clog ${varValue} ${clog_SRCS})
 #debugging lib
 add_library(clogd ${varValue} ${clog_SRCS})
 target_compile_definitions(clogd PRIVATE -DENABLE_CLOG)
-if(ENABLE_CLOG_COLOR)
-target_compile_definitions(clogd PRIVATE -DENABLE_CLOG_COLOR)
-endif()
 endfunction(build_lib)
 
 if(BUILD_SHARED_LIBS)
