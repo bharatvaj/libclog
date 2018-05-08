@@ -72,7 +72,7 @@ void add_to_stack(clog_item *ci) {
  * \brief - Changes the default printing socket
  * \param sockfd - The socket descriptor to write to
  */
-void change_socket(FILE *output_file) {
+void clog_out(FILE *output_file) {
 #ifdef ENABLE_CLOG
   __output_file = output_file;
 #endif

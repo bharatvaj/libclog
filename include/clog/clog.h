@@ -18,7 +18,7 @@ typedef struct {
  * \brief - Change the destination for log messages
  * \param output_file - The FILE * to where the output will go to
  */
-void log_out(FILE *);
+void clog_out(FILE *);
 
 /*!
  * \brief - Log message as information
