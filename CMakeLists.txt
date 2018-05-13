@@ -6,17 +6,7 @@ file(GLOB clog_HDRS "include/clog/clog.h")
 file(GLOB clog_SRCS "src/clog.c")
 find_package(Threads REQUIRED)
 
-function(build_lib varValue)
-	add_library(clog ${varValue} ${clog_SRCS})
-endfunction(build_lib)
-
-if(BUILD_SHARED_LIBS)
-	#shared lib
-	build_lib(SHARED)
-else()
-	#static lib
-	build_lib(STATIC)
-endif()
+add_library(clog ${clog_SRCS})
 
 target_include_directories(clog PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(clog ${CMAKE_THREAD_LIBS_INIT})
