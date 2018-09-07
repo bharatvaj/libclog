@@ -12,8 +12,8 @@ target_include_directories(clog PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(clog ${CMAKE_THREAD_LIBS_INIT})
 set_target_properties(clog PROPERTIES VERSION ${PROJECT_VERSION})
 
+install(FILES clog-config.cmake DESTINATION lib/cmake/clog)
 install(FILES ${clog_HDRS} DESTINATION include/clog)
-
 install (TARGETS clog
 		PUBLIC_HEADER DESTINATION include/clog
         ARCHIVE DESTINATION lib
