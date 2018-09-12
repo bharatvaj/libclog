@@ -23,6 +23,5 @@ install (TARGETS clog
 add_executable(clog_test_exec test/test.c)
 target_include_directories(clog_test_exec PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(clog_test_exec clog)
-
 add_test(clog_test ${CMAKE_BINARY_DIR}/clog_test_exec)
 

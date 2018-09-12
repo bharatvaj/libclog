@@ -1,5 +1,5 @@
-find_path(CLOG_INCLUDE_DIR clog.h /usr/local/include/clog /usr/include/clog)
-find_library(CLOG_LIBS clog /usr/local/lib /usr/lib)
+find_path(CLOG_INCLUDE_DIR clog.h PATH_SUFFIXES /usr/local/include/clog /usr/include/clog $ENV{clog_DIR}/include/clog)
+find_library(CLOG_LIBS clog HINTS /usr/local/lib /usr/lib $ENV{clog_DIR}/lib)
 get_filename_component(CLOG_LIBRARY_DIR ${CLOG_LIBS} PATH)
 if(CLOG_INCLUDE_DIR)
 	if(CLOG_LIBS)
