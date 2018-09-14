@@ -33,11 +33,12 @@
 #endif
 
 #define _CLOG_LOG(__CLOG_LEVEL, __CLOG_FILE, __CLOG__LINE)                     \
-  {                                                                            \
-    char *str = (char *)malloc(strlen(msg));                                   \
+  {                                                                             \
+    int len = strlen(msg);                                                            \
+    char *str = (char *)malloc(len + CLOG_BUFFER_SIZE);                                   \
     va_list vl;                                                                \
     va_start(vl, msg);                                                         \
-    vsnprintf(str, CLOG_BUFFER_SIZE, msg, vl);                                 \
+    vsnprintf(str, len+CLOG_BUFFER_SIZE, msg, vl);                                 \
     clog_item *ci = (clog_item *)malloc(sizeof(clog_item));                    \
     ci->level = __CLOG_LEVEL;                                                  \
     ci->tag = tag;                                                             \

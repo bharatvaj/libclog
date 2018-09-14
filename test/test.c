@@ -1,11 +1,14 @@
 #include <clog/clog.h>
 
-#define TAG "TEST"
+static const char *TAG = "TEST";
 int main(int argc, char *argv[]){
     log_inf(TAG, "Info function testing");
     log_war(TAG, "Warning function testing");
     log_err(TAG, "Error function testing");
     log_per(TAG, "Perror function testing");
     log_fat(TAG, "Fatal function testing");
+    char *hostname = "localhost";
+    int port = 7500;
+    log_inf(TAG, "connection established successfully to %s on port %d", hostname, port);
     return 0;
 }
