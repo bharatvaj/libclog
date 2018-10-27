@@ -58,12 +58,29 @@ static pthread_mutex_t __clog_lock = PTHREAD_MUTEX_INITIALIZER;
 
 static char *log_levels[] = {"INFO", "WARN", "ERROR", "FATAL"};
 
+static int __clog_enable = 0; //0 for false
+
+void clog_enable()
+{
+  if(__output_file == NULL){
+    __output_file = stderr;
+  }
+  __clog_enable = 1;
+}
+
+void clog_disable(){
+  __clog_enable = 0;
+}
+
 void add_to_stack(clog_item *ci)
 {
-  _CLOG_LOCK();
-  fprintf(stderr, "%s [%s] %s: %s\n", "", log_levels[ci->level], ci->tag,
-          ci->msg);
-  _CLOG_UNLOCK();
+  if (__clog_enable == 1)
+  {
+    _CLOG_LOCK();
+    fprintf(__output_file, "%s [%s] %s: %s\n", "", log_levels[ci->level], ci->tag,
+            ci->msg);
+    _CLOG_UNLOCK();
+  }
 }
 
 /*!
@@ -71,7 +88,6 @@ void add_to_stack(clog_item *ci)
  * \param sockfd - The socket descriptor to write to
  */
 void clog_out(FILE *output_file) { __output_file = output_file; }
-
 void log_inf(const char *tag, const char *msg, ...)
 {
   _CLOG_LOG(CLOG_INFO, __FILE__, __LINE__);

@@ -1,7 +1,9 @@
 #include <clog/clog.h>
+#include <stdio.h>
 
 static const char *TAG = "TEST";
 int main(int argc, char *argv[]){
+    clog_enable();
     log_inf(TAG, "Info function testing");
     log_war(TAG, "Warning function testing");
     log_err(TAG, "Error function testing");

@@ -14,6 +14,10 @@ typedef struct {
   const char *msg;
 } clog_item;
 
+void clog_enable();
+
+void clog_disable();
+
 /*!
  * \brief - Change the destination for log messages
  * \param output_file - The FILE * to where the output will go to
