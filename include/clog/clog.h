@@ -6,7 +6,7 @@ extern "C" {
 
 #include <stdio.h>
 
-enum clog_level { CLOG_INFO, CLOG_WARN, CLOG_ERROR, CLOG_FATAL };
+enum clog_level { CLOG_INFO, CLOG_WARN, CLOG_ERROR, CLOG_FATAL, CLOG_VERBOSE };
 
 typedef struct {
   enum clog_level level;
