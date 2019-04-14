@@ -1,5 +1,5 @@
 # clog
-A simple yet fast and bare minimal asynchronous logging library for C
+A simple yet fast and bare minimal thread-safe logging library for C
 
 ### Installation
 On Linux/Unix systems including macOS, shared libraries can be built using the following commands
