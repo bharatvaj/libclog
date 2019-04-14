@@ -17,11 +17,11 @@ sudo make install
 Include the header file, `#include<clog/clog.h>`
 ```c
 const char *TAG = "TEST";
-log_inf(TAG, "%s", "test"); // log info
-log_war(TAG, "%s", "test"); // log warning
-log_err(TAG, "%s", "test"); // log error
-log_per(TAG, "%s", "test"); // similar to error but calls perror
-log_fat(TAG, "%s", "test"); // log fatal errors
+clog_i(TAG, "%s", "test"); // log info
+clog_w(TAG, "%s", "test"); // log warning
+clog_e(TAG, "%s", "test"); // log error
+clog_v(TAG, "%s", "test"); // log verbose messages
+clog_f(TAG, "%s", "test"); // log fatal errors
 ```
 
 #### Debug and Production builds
