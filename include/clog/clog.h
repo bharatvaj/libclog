@@ -29,35 +29,35 @@ void clog_out(FILE *);
  * \param tag - The tag or context of the log
  * \param msg - The message to be printed
  */
-void log_inf(const char *tag, const char *, ...);
+void clog_i(const char *tag, const char *, ...);
 
 /*!
  * \brief - Log message as warning
  * \param tag - The tag or context of the log
  * \param msg - The message to be printed
  */
-void log_war(const char *, const char *, ...);
+void clog_w(const char *, const char *, ...);
 
 /*!
  * \brief - Log message as error
  * \param tag - The tag or context of the log
  * \param msg - The message to be printed
  */
-void log_err(const char *, const char *, ...);
+void clog_e(const char *, const char *, ...);
 
 /*!
- * \brief - Log message as error but get error message from errno
+ * \brief - Log message as verbose
  * \param tag - The tag or context of the log
  * \param msg - The message to be printed
  */
-void log_per(const char *, const char *, ...);
+void clog_v(const char *, const char *, ...);
 
 /*!
  * \brief - Log message as fatal error
  * \param tag - The tag or context of the log
  * \param msg - The message to be printed
  */
-void log_fat(const char *, const char *, ...);
+void clog_f(const char *, const char *, ...);
 
 #ifdef __cplusplus
 }

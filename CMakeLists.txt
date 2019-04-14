@@ -20,8 +20,12 @@ install (TARGETS clog
         LIBRARY DESTINATION lib
 		RUNTIME DESTINATION bin)
 
-add_executable(clog_test_exec test/test.c)
-target_include_directories(clog_test_exec PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(clog_test_exec clog)
-add_test(clog_test ${CMAKE_BINARY_DIR}/clog_test_exec)
+add_executable(clog_test1 test/short_message_test.c)
+target_include_directories(clog_test1 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(clog_test1 clog)
+add_test(clog_test1 ${CMAKE_BINARY_DIR}/clog_test1)
 
+add_executable(clog_test2 test/long_message_test.c)
+target_include_directories(clog_test2 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(clog_test2 clog)
+add_test(clog_test2 ${CMAKE_BINARY_DIR}/clog_test2)

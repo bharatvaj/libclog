@@ -1,6 +1,5 @@
 #include <clog/clog.h>
 
-#include <errno.h>
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,10 +7,8 @@
     defined(__APPLE__) && defined(__MACH__) // TODO Add Solaris
 #include <pthread.h>
 #include <unistd.h>
-#define SEPARATOR ('/')
 #elif _WIN32
 #include <Windows.h>
-#define SEPARATOR ('\\')
 #else
 #error Platform not supprted
 #endif
@@ -56,7 +53,7 @@ static pthread_mutex_t __clog_lock = PTHREAD_MUTEX_INITIALIZER;
 // windows locks
 #endif
 
-static char *log_levels[] = {"INFO", "WARN", "ERROR", "FATAL"};
+static char *log_levels[] = {"INFO", "WARN", "ERROR", "FATAL", "VERBOSE"};
 
 static int __clog_enable = 0; //0 for false
 
@@ -72,7 +69,7 @@ void clog_disable(){
   __clog_enable = 0;
 }
 
-void add_to_stack(clog_item *ci)
+static void add_to_stack(clog_item *ci)
 {
   if (__clog_enable == 1)
   {
@@ -83,42 +80,28 @@ void add_to_stack(clog_item *ci)
   }
 }
 
-/*!
- * \brief - Changes the default printing socket
- * \param sockfd - The socket descriptor to write to
- */
 void clog_out(FILE *output_file) { __output_file = output_file; }
-void log_inf(const char *tag, const char *msg, ...)
+void clog_i(const char *tag, const char *msg, ...)
 {
   _CLOG_LOG(CLOG_INFO, __FILE__, __LINE__);
 }
 
-void log_war(const char *tag, const char *msg, ...)
+void clog_w(const char *tag, const char *msg, ...)
 {
   _CLOG_LOG(CLOG_WARN, __FILE__, __LINE__);
 }
 
-void log_err(const char *tag, const char *msg, ...)
+void clog_e(const char *tag, const char *msg, ...)
 {
   _CLOG_LOG(CLOG_ERROR, __FILE__, __LINE__);
 }
 
-void log_per(const char *tag, const char *msg, ...)
+void clog_v(const char *tag, const char *msg, ...)
 {
-  char *str = (char *)malloc(strlen(msg));
-  va_list vl;
-  va_start(vl, msg);
-  vsprintf(str, msg, vl);
-  va_end(vl);
-  clog_item *ci = (clog_item *)malloc(sizeof(clog_item));
-  ci->level = CLOG_ERROR;
-  ci->tag = tag;
-  str = strcat(str, ": ");
-  ci->msg = strcat(str, strerror(errno));
-  add_to_stack(ci);
+    _CLOG_LOG(CLOG_ERROR, __FILE__, __LINE__);
 }
 
-void log_fat(const char *tag, const char *msg, ...)
+void clog_f(const char *tag, const char *msg, ...)
 {
   _CLOG_LOG(CLOG_FATAL, __FILE__, __LINE__);
 }
