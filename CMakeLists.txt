@@ -1,31 +1,60 @@
-cmake_minimum_required(VERSION 3.0)
-project(clog VERSION 0.8 DESCRIPTION "Fast thread-safe logging library for C")
+cmake_minimum_required(VERSION 3.5.1)
+project(clog VERSION 0.5.0)
 
-enable_testing()
-file(GLOB clog_HDRS "include/clog/clog.h")
-file(GLOB clog_SRCS "src/clog.c")
-find_package(Threads REQUIRED)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 
-add_library(clog ${clog_SRCS})
+# Set the build type if not set
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release")
+endif()
 
-target_include_directories(clog PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(clog ${CMAKE_THREAD_LIBS_INIT})
-set_target_properties(clog PROPERTIES VERSION ${PROJECT_VERSION})
+add_library(clog ${CMAKE_CURRENT_SOURCE_DIR}/src/clog.c)
+target_include_directories(clog PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>)
 
-install(FILES clog-config.cmake DESTINATION lib/cmake/clog)
-install(FILES ${clog_HDRS} DESTINATION include/clog)
-install (TARGETS clog
-		PUBLIC_HEADER DESTINATION include/clog
-        ARCHIVE DESTINATION lib
-        LIBRARY DESTINATION lib
-		RUNTIME DESTINATION bin)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set(WARNINGS "-Werror" "-Wall")
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    set(WARNINGS "-Werror" "-Wall")
+elseif(MSVC)
+    set(WARNINGS "/WX" "/W4")
+endif()
+target_compile_options(clog PRIVATE ${WARNINGS})
 
-add_executable(clog_test1 test/short_message_test.c)
-target_include_directories(clog_test1 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(clog_test1 clog)
-add_test(clog_test1 ${CMAKE_BINARY_DIR}/clog_test1)
+if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+	include(GNUInstallDirs)
 
-add_executable(clog_test2 test/long_message_test.c)
-target_include_directories(clog_test2 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(clog_test2 clog)
-add_test(clog_test2 ${CMAKE_BINARY_DIR}/clog_test2)
+	set(CLOG_INC_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}")
+	set(CLOG_RUNTIME_INSTALL_DIR "${CMAKE_INSTALL_BINDIR}")
+	set(CLOG_LIBRARY_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}")
+	set(CLOG_ARCHIVE_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}")
+	set(CLOG_FRAMEWORK_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}")
+
+	set(CLOG_CMAKE_CONFIG_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/clog/cmake")
+	set(CLOG_ADDITIONAL_FILES_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/clog")
+
+	# Install target
+	install(TARGETS clog EXPORT clogTargets
+		RUNTIME       DESTINATION ${CLOG_RUNTIME_INSTALL_DIR}
+		LIBRARY       DESTINATION ${CLOG_LIBRARY_INSTALL_DIR}
+		ARCHIVE       DESTINATION ${CLOG_ARCHIVE_INSTALL_DIR}
+		FRAMEWORK     DESTINATION ${CLOG_FRAMEWORK_INSTALL_DIR})
+
+	# Install headers
+	install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/"
+		DESTINATION ${CLOG_INC_INSTALL_DIR})
+
+	# Make cmake config files for all targets
+	install(EXPORT  clogTargets
+		DESTINATION ${CLOG_CMAKE_CONFIG_INSTALL_DIR}
+		FILE clog-config.cmake)
+
+	# Install readme and license
+	install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE" "${CMAKE_CURRENT_SOURCE_DIR}/README.md"
+		DESTINATION ${CLOG_ADDITIONAL_FILES_INSTALL_DIR})
+endif()
+
+if (CLOG_TESTS)
+	add_subdirectory(test)
+endif()
