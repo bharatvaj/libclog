@@ -9,6 +9,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 add_library(clog ${CMAKE_CURRENT_SOURCE_DIR}/src/clog.c)
+set_property(TARGET clog PROPERTY POSITION_INDEPENDENT_CODE ON)
 target_include_directories(clog PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
