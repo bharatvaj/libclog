@@ -31,7 +31,7 @@
 
 #define _CLOG_LOG(__CLOG_LEVEL, __CLOG_FILE, __CLOG__LINE)  \
   {                                                         \
-    int len = strlen(msg);                                  \
+    int len = (int)strlen(msg);                             \
     char *str = (char *)malloc(len + CLOG_BUFFER_SIZE);     \
     va_list vl;                                             \
     va_start(vl, msg);                                      \
