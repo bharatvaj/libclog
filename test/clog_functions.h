@@ -1,12 +1,10 @@
-#include <clog/clog.h>
+#include <clog.h>
 
 static const char *TAG = "TEST";
 int clog_functions() {
-    clog_enable();
     clog_i(TAG, "Info function testing");
     clog_w(TAG, "Warning function testing");
     clog_e(TAG, "Error function testing");
-    clog_f(TAG, "Fatal function testing");
     clog_v(TAG, "Verbose function testing");
     char *hostname = "localhost";
     int port = 7500;

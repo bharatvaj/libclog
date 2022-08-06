@@ -4,3 +4,9 @@ build/
 .idea/
 /cmake-build-debug
 CMakeSettings.json
+.nvimrc
+.vimspector.json
+clog_test
+*.o
+*.a
+libclog.a
