@@ -4,7 +4,7 @@ A simple yet fast and bare minimal thread-safe logging library for C
 
 Installation
 ------------
-On Linux/Unix systems including macOS, shared libraries can be built using the following commands
+On Linux/Unix systems including macOS, libraries can be built using the following commands
 
 make
 sudo make install
@@ -14,16 +14,16 @@ Usage
 
 #include <clog.h>
 
-const char *TAG = "TEST";
-clog_i(TAG, "%s", "test"); // log info
-clog_w(TAG, "%s", "test"); // log warning
-clog_e(TAG, "%s", "test"); // log error
-clog_v(TAG, "%s", "test"); // log verbose messages
-clog_f(TAG, "%s", "test"); // log fatal errors
+clog_enable();        // enable clog
+
+CLOG_I("%s", "test"); // log info
+CLOG_W("%s", "test"); // log warning
+CLOG_E("%s", "test"); // log error
+CLOG_V("%s", "test"); // log verbose messages
 
 Output
 ------
-clog by default prints to stderr but can be changed to print to any given `FILE *` with write or append mode enabled
+clog by default prints to stderr but can to any given `FILE *` opened write or append mode
 
 #include <stdio.h>
 ...
