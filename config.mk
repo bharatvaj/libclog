@@ -1,6 +1,6 @@
 # clog version
 VERSION = 0.2.1
-PREFIX = /usr
+PREFIX = /usr/local
 
 # Customize below to fit your system
 
