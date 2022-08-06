@@ -6,8 +6,6 @@ SRC = clog.c
 
 all: libclog.a
 
-test: test_all
-
 options:
 	@echo clog build options:
 	@echo "CFLAGS   = $(IICFLAGS)"
@@ -31,9 +29,16 @@ uninstall:
 clog_test: test/test.c test/clog_functions.h test/long_message.h libclog.a
 	$(CC) $< -I. -Itest -L. -lclog -o $@
 
-test_all: clog_test
+
+test_clog_functions: clog_test
 	./clog_test clog_functions
+
+test_long_message: clog_test
 	./clog_test long_message
+
+test_all: test_clog_functions test_long_message
+
+test: test_all
 
 clean:
 	rm -f libclog.a clog_test *.o

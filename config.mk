@@ -1,11 +1,8 @@
 # clog version
-VERSION = 0.0.6
-PREFIX = /usr/local
+VERSION = 0.2.0
+PREFIX = /usr
 
 # Customize below to fit your system
-
-# paths
-PREFIX = /usr/local
 
 # flags
 CPPFLAGS = -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_POSIX_C_SOURCE=200809L -DVERSION=\"${VERSION}\" ${XINERAMAFLAGS}
